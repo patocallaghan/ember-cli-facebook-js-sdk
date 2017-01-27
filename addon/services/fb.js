@@ -49,6 +49,12 @@ export default Ember.Service.extend({
     this.setAccessToken(token);
   },
 
+  FB() {
+    return this.FBInit().then(function() {
+      return window.FB;
+    });
+  },
+
   api(path) {
     var method = 'GET';
     var parameters = {};
