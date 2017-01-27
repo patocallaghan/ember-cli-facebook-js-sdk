@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Service.extend(Ember.Evented, {
   fbInitPromise: null,
@@ -7,7 +6,7 @@ export default Ember.Service.extend(Ember.Evented, {
   FBInit() {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
-    const ENV = getOwner(this)._lookupFactory('config:environment');
+    const ENV = Ember.getOwner(this)._lookupFactory('config:environment');
 
     if (ENV.FB && ENV.FB.skipInit) {
       this.fbInitPromise = Ember.RSVP.Promise.resolve('skip init');
@@ -48,12 +47,6 @@ export default Ember.Service.extend(Ember.Evented, {
   loginWith: function(token) {
     console.warn('DEPRECATED: please, use setAccessToken instead');
     this.setAccessToken(token);
-  },
-
-  FB() {
-    return this.FBInit().then(function() {
-      return window.FB;
-    });
   },
 
   _api(path) {
