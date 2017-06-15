@@ -4,7 +4,7 @@ export default Ember.Service.extend(Ember.Evented, {
   fbInitPromise: null,
   locale: null,
 
-  FBInit() {
+  FBInit(options = {}) {
     if (this.fbInitPromise) { return this.fbInitPromise; }
 
     const ENV = Ember.getOwner(this).resolveRegistration('config:environment');
@@ -20,6 +20,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
     var original = window.fbAsyncInit;
     var initSettings = ENV.FB;
+    initSettings = Ember.assign({}, initSettings, options)
     if (!initSettings || !initSettings.appId || !initSettings.version) {
       return Ember.RSVP.reject('No settings for init');
     }
